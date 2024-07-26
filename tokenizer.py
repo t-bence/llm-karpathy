@@ -4,10 +4,10 @@ class Tokenizer:
         self.text = text
         self.bytes = [int(byte) for byte in self.text.encode("utf-8")]
     
-    def _get_stats(self) -> dict:
+    def _get_stats(tokens: list) -> dict:
         counts = dict()
 
-        for pair in zip(self.bytes, self.bytes[1:]):
+        for pair in zip(tokens, tokens[1:]):
             if pair in counts.keys():
                 counts[pair] += 1
             else:
@@ -27,10 +27,27 @@ class Tokenizer:
         This function merges occurrences of the pair in the tokens 
         and replaces them with new_id
         """
+        result = []
+        i = 0
+        while i < len(tokens):
+            if (i < len(tokens)-1 and tokens[i] == pair[0] and tokens[i+1] == pair[1]):
+                result.append(new_id)
+                i+=2
+            else:
+                result.append(tokens[i])
+                i+=1
 
-        for start in range(len(tokens) - 1):
-            if (tokens[start] == pair[0] and tokens[start+1] == pair[1]):
-                tokens[start] = new_id
-                tokens.pop(start+1)
+        return result
+    
+    def tokenize(self, num_merges: int) -> list:
+        tokens = self.bytes.copy()
+
+        for i in range(num_merges):
+            new_id = 256 + i
+            stats = Tokenizer._sort_stats(
+                Tokenizer._get_stats(tokens)
+            )
+            pair = stats[i][0] # gets the most common byte pair
+            tokens = Tokenizer._merge(tokens, pair, new_id)
 
         return tokens

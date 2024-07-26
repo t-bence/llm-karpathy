@@ -13,7 +13,8 @@ def test_Tokenizer():
 
 def test_stats():
     text = "aaaabc"
-    result = Tokenizer(text)._get_stats()
+    tokenizer = Tokenizer(text)
+    result = Tokenizer._get_stats(tokenizer.bytes)
     correct = {
         (CHAR_A, CHAR_A): 3,
         (CHAR_A, CHAR_B): 1,
@@ -23,7 +24,10 @@ def test_stats():
 
 def test_sort():
     text = "aaaabc"
-    result = Tokenizer._sort_stats(Tokenizer(text)._get_stats())
+    tokenizer = Tokenizer(text)
+    result = Tokenizer._sort_stats(
+        Tokenizer._get_stats(tokenizer.bytes)
+    )
     assert result[0][0] == (CHAR_A, CHAR_A)
     assert result[0][1] == 3
 
@@ -35,4 +39,9 @@ def test_merge_karpathy_example():
     # This is the example in the video lecture
     input = [5, 6, 6, 7, 9, 1]
     result = Tokenizer._merge(input, (6, 7), 99)
-    assert input == [5, 6, 99, 9, 1]
+    assert result == [5, 6, 99, 9, 1]
+
+def test_tokenizer():
+    tokenizer = Tokenizer("aaaabc")
+    result = tokenizer.tokenize(1)
+    assert result == [256, 256, CHAR_B, CHAR_C]
