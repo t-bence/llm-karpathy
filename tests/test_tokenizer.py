@@ -30,3 +30,9 @@ def test_sort():
 def test_merge():
     result = Tokenizer._merge([CHAR_A, CHAR_A, CHAR_B, CHAR_C], (CHAR_A, CHAR_A), 256)
     assert result == [256, CHAR_B, CHAR_C]
+
+def test_merge_karpathy_example():
+    # This is the example in the video lecture
+    input = [5, 6, 6, 7, 9, 1]
+    result = Tokenizer._merge(input, (6, 7), 99)
+    assert input == [5, 6, 99, 9, 1]
