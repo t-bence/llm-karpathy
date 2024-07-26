@@ -4,6 +4,7 @@ class Tokenizer:
         self.text = text
         self.bytes = [int(byte) for byte in self.text.encode("utf-8")]
     
+    @staticmethod
     def _get_stats(tokens: list) -> dict:
         counts = dict()
 
@@ -15,6 +16,7 @@ class Tokenizer:
 
         return counts
     
+    @staticmethod
     def _sort_stats(stats: dict) -> list:
         return sorted(
             (x for x in stats.items()),
@@ -22,6 +24,7 @@ class Tokenizer:
             reverse=True
         )
     
+    @staticmethod
     def _merge(tokens: list, pair: tuple[int, int], new_id: int) -> list:
         """
         This function merges occurrences of the pair in the tokens 
