@@ -25,9 +25,8 @@ def test_stats():
 def test_sort():
     text = "aaaabc"
     tokenizer = Tokenizer(text)
-    result = Tokenizer._sort_stats(
-        Tokenizer._get_stats(tokenizer.bytes)
-    )
+    result = Tokenizer._get_sorted_stats(tokenizer.bytes)
+    
     assert result[0][0] == (CHAR_A, CHAR_A)
     assert result[0][1] == 3
 
@@ -45,3 +44,9 @@ def test_tokenizer():
     tokenizer = Tokenizer("aaaabc")
     result = tokenizer.tokenize(1)
     assert result == [256, 256, CHAR_B, CHAR_C]
+
+def test_decoding():
+    tokenizer = Tokenizer("abc")
+    result = tokenizer.tokenize(1)
+    
+    assert tokenizer.decode(result) == "abc"
